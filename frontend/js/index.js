@@ -157,14 +157,18 @@ $(document).ready(function () {
   function showSelected(e) {
     console.log(e);
     if (this.checked) {
+      if (this.id === 'input-withdraw' || this.id === 'input-deposit' ) {
 
-      if (this.id != 'input-transfer') {
-
+        console.log('with or deposit');
         $('select[name=select-from]').attr("disabled", true);
-
-      }
-      else {
+        $('select[name=select-to]').attr("disabled", true);
+        $('select[name=select-account]').attr("disabled", false);
+      } 
+      else if(this.id === 'input-transfer' ) {
+        console.log('ELSE:');
         $('select[name=select-from]').attr("disabled", false);
+        $('select[name=select-to]').attr("disabled", false);
+        $('select[name=select-account]').attr("disabled", true);
 
       }
       console.log('you have selected :' + this.id);
