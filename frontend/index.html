@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -26,21 +27,21 @@
     </form>
     <form id="form-transaction" class="form-transaction" action="">
       New Transaction: Deposit
-      <input id="input-deposit" class="input-deposit" type="radio" />
+      <input id="input-deposit" name="transaction-type" class="input-deposit" type="radio" />
       Withdraw
-      <input id="input-withdraw" class="input-withdraw" type="radio" />
+      <input id="input-withdraw" name="transaction-type" class="input-withdraw" type="radio" />
       Transfer
-      <input id="input-transfer" class="input-transfer" type="radio" />
+      <input id="input-transfer" name="transaction-type" class="input-transfer" type="radio" />
       Account:
-      <select id="select-account" class="select-account"></select>
+      <select id="select-account" name="select-account" class="select-account"></select>
 
       From:
-      <select id="select-from" class="select-from"></select>
+      <select id="select-from" class="select-from" name="select-from"></select>
 
       To:
-      <select id="select-to" class="slect-to"></select>
+      <select id="select-to" name="select-to" class="select-to"></select>
       Category:
-      <select id="select-category" class="select-category"></select>
+      <select id="select-category" class="select-category" name="select-category"></select>
       <input id="input-new-category" class="input-new-category" type="text" />
       <button id="btn-add-new-category" class="btn-add-new-category" type="button">Add new category</button>
 
@@ -69,6 +70,9 @@
         <th id="th-to">To</th>
       </tr>
     </table>
+    <p id="errorMessage" style="color: red;" class="errorMessage" name="errorMessage"></p>
+    <p id="succesMessage" style="color: rgb(29, 117, 29);" class="succesMessage" name="succesMessage"></p>
+
   </main>
   <script src="./js/helpers/Account.js"></script>
   <script src="./js/helpers/Category.js"></script>
