@@ -1,17 +1,26 @@
 $(() => {
 
+
   // $('input#radio1').click(function(e){
+
   // //alert('id ='+ e.currentTarget.id);
   // console.log('id ='+ e.currentTarget.id);
+
   // });
+
+
+
+
+
 
   //Start coding here!
   // Eduardo Campos
-
 });
 
 
+
 $(document).ready(function () {
+
 
   let accountsArray = [];
   let new_account = new Account('test_account');
@@ -21,18 +30,7 @@ $(document).ready(function () {
   $('#input-new-category').attr('disabled', true);
   //dummy section while waiting merge.
 
-  $('select#select-account').append('<option>' + empty + '</option>');
 
-  $('select#select-account').append('<option>' + new_account.username + '</option>');
-
-  $('select#select-from').append('<option>' + empty + '</option>');
-
-  $('select#select-from').append('<option>' + new_account.username + '</option>');
-
-
-  $('select#select-to').append('<option>' + empty + '</option>');
-
-  $('select#select-to').append('<option>' + new_account.username + '</option>');
 
 
   // to populate category select when the page is loading.
@@ -132,12 +130,6 @@ $(document).ready(function () {
 
   }
 
-  //TO-DO
-  $('button#btn-add-new-account').click(function () {
-
-
-  });
-
   // radio button toggle
   // add an event listener for the change event
   const radioButtons = document.querySelectorAll('input[name="transaction-type"]');
@@ -148,18 +140,14 @@ $(document).ready(function () {
   function showSelected(e) {
     console.log(e);
     if (this.checked) {
-
       if (this.id === 'input-withdraw' || this.id === 'input-deposit') {
-
 
         console.log('with or deposit');
         $('select[name=select-from]').attr("disabled", true);
         $('select[name=select-to]').attr("disabled", true);
         $('select[name=select-account]').attr("disabled", false);
-
       }
       else if (this.id === 'input-transfer') {
-
         console.log('ELSE:');
         $('select[name=select-from]').attr("disabled", false);
         $('select[name=select-to]').attr("disabled", false);
@@ -172,6 +160,29 @@ $(document).ready(function () {
   }
 
   //? Eduardo's Code
+
+
+  $('#select-account').append($('<option>', {
+    value: 1,
+    text: "Select-option"
+  }));
+
+  $('#select-from').append($('<option>', {
+    value: 1,
+    text: "Select-option"
+  }));
+
+  $('#select-to').append($('<option>', {
+    value: 1,
+    text: "Select-option"
+  }));
+
+  $('#select-filter-by-account').append($('<option>', {
+    value: 1,
+    text: "Select-option"
+  }));
+
+
 
   $('#btn-add-new-account').on('click', function (e) {
     let new_Account = $('#new-account').val();
@@ -186,6 +197,7 @@ $(document).ready(function () {
         value: 1,
         text: new_Account
       }));
+      //  $('select#select-account').append('<option>' + empty + '</option>');
 
       $('#select-from').append($('<option>', {
         value: 1,
@@ -253,6 +265,8 @@ $(document).ready(function () {
                 `);
     });
   });
+
+
 
 
 
