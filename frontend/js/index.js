@@ -11,9 +11,7 @@ $(() => {
 });
 
 
-
 $(document).ready(function () {
-
 
   let accountsArray = [];
   let new_account = new Account('test_account');
@@ -172,58 +170,89 @@ $(document).ready(function () {
 
     }
   }
-  
-   $('#btn-add-new-account').on('click', function (e) {
-      let new_Account = $('#input-new-account').val();
-      if (new_Account.length == 0) {
-        alert("Empty field!");
-      }
-      if (new_Account === $('#p-account-sumary').text() && new_Account.length != 0) {
-        alert("Username already exists");
-      }
-      else {
-        $('#select-account').append($('<option>', {
-          value: 1,
-          text: new_Account
-        }));
 
-        $('#select-filter-by-account').append($('<option>', {
-          value: 1,
-          text: new_Account
-        }));
+  //? Eduardo's Code
 
-        $.ajax({
-          method: 'post',
-          data: JSON.stringify({
-            newAccount: {
-              username: `${new_Account}`,
-              transactions: [],
-            },
-          }),
-          url: 'http://localhost:3000/accounts',
-          contentType: 'application/json',
-          dataType: 'json',
-        }).done((data) => {
-          console.log('Account Saved', data);
-        });
-      }
-    });
+  $('#btn-add-new-account').on('click', function (e) {
+    let new_Account = $('#new-account').val();
+    if (new_Account.length == 0) {
+      alert("Empty field!");
+    }
+    if (new_Account === $('#p-account-sumary').text() && new_Account.length != 0) {
+      alert("Username already exists");
+    }
+    else {
+      $('#select-account').append($('<option>', {
+        value: 1,
+        text: new_Account
+      }));
 
-    $('#btn-account-sumary').on('click', function (e) {
-      getAccountSumary();
+      $('#select-from').append($('<option>', {
+        value: 1,
+        text: new_Account
+      }));
 
-    });
+      $('#select-to').append($('<option>', {
+        value: 1,
+        text: new_Account
+      }));
 
-    function getAccountSumary() {
+      $('#select-filter-by-account').append($('<option>', {
+        value: 1,
+        text: new_Account
+      }));
+
       $.ajax({
-        method: 'get',
+        method: 'post',
+        data: JSON.stringify({
+          newAccount: {
+            username: `${new_Account}`,
+            transactions: [],
+          },
+        }),
         url: 'http://localhost:3000/accounts',
+        contentType: 'application/json',
         dataType: 'json',
       }).done((data) => {
-        console.log('data get ajax', data);
-        return data;
+        console.log('Account Saved', data);
       });
     }
+  });
+
+  $('#btn-account-sumary').on('click', function (e) {
+    getAccountSumary();
+
+  });
+
+  function getAccountSumary() {
+    $.ajax({
+      method: 'get',
+      url: 'http://localhost:3000/accounts',
+      dataType: 'json',
+    }).done((data) => {
+      console.log('data get ajax', data);
+      return data;
+    });
+  }
+
+  //getJSON - file, cb(data)
+  $.getJSON('data.json', (data) => {
+    console.log('data json', data);
+    $.each(data, (index, user) => {
+      $('#list').append(`
+                <li>
+                 ${user.id}
+                 ${user.username}
+                 ${user.transactionType}
+                 ${user.category} 
+                 ${user.description}
+                 ${user.amount}
+                 ${user.from}
+                 ${user.to}
+                 </li>
+                `);
+    });
+  });
 
 
 

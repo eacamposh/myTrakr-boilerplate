@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "username": "Martina",
+        "transactionType": "Transfer",
+        "category": "New Category",
+        "description": "New Transfer",
+        "amount": "100",
+        "from": "Martina",
+        "to": "Victor"
+    },
+    {
+        "id": 2,
+        "username": "Eduardo",
+        "transactionType": "Transfer",
+        "category": "New Category",
+        "description": "New Transfer",
+        "amount": "200",
+        "from": "Eduardo",
+        "to": "Victor"
+    },
+    {
+        "id": 3,
+        "username": "Victor",
+        "transactionType": "Transfer",
+        "category": "New Category",
+        "description": "New Transfer",
+        "amount": "200",
+        "from": "Victor",
+        "to": "Eduardo"
+    },
+    {
+        "id": 4,
+        "username": "Claudio",
+        "transactionType": "Transfer",
+        "category": "New Category",
+        "description": "New Transfer",
+        "amount": "200",
+        "from": "Claudio",
+        "to": "Victor"
+    }
+]
