@@ -1,81 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>myTrakr</title>
-    <!-- jQuery file -->
-    <script src="./js/vendors/jquery.js"></script>
-    <!-- Bootstrap files -->
-    <script src="./js/vendors/bootstrap.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="./css/index.css" />
-  </head>
-  <body>
-    myTrakr 
-    <main>
-      <form action="">
-        New Account:
-        <input type="text" />
-        <button>Add new account</button>
-      </form>
-      <form action="">
-        New Transaction: Deposit
-        <input type="radio" />
-        Withdraw
-        <input type="radio" />
-        Transfer
-        <input type="radio" />
-        Account:
-        <select></select>
 
-        From:
-        <select></select>
 
-        To:
-        <select></select>
-        Category:
-        <select></select>
-        <input type="text" />
-        <button type="button">Add new category</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>myTrakr</title>
+  <!-- jQuery file -->
+  <script src="./js/vendors/jquery.js"></script>
+  <!-- Bootstrap files -->
+  <script src="./js/vendors/bootstrap.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./css/index.css" />
+</head>
 
-        Description
-        <input type="text" />
+<body>
+  myTrakr
+  <main>
+    <form action="">
+      New Account:
+      <input id="new-account" class="new-account" type="text" />
+      <button id="btn-add-new-account" class="btn-add-new-account" type="button">Add new account</button>
+    </form>
+    <form id="form-transaction" class="form-transaction" action="">
+      New Transaction: Deposit
+      <input id="input-deposit" name="transaction-type" class="input-deposit" type="radio" />
+      Withdraw
+      <input id="input-withdraw" name="transaction-type" class="input-withdraw" type="radio" />
+      Transfer
+      <input id="input-transfer" name="transaction-type" class="input-transfer" type="radio" />
+      Account:
+      <select id="select-account" name="select-account" class="select-account"></select>
 
-        Amount:
-        <input type="number" />
+      From:
+      <select id="select-from" class="select-from" name="select-from"></select>
 
-        <button>Add transaction</button>
-      </form>
+      To:
+      <select id="select-to" name="select-to" class="select-to"></select>
+      Category:
+      <select id="select-category" class="select-category" name="select-category"></select>
+      <input id="input-new-category" class="input-new-category" type="text" />
+      <button id="btn-add-new-category" class="btn-add-new-category" type="button">Add new category</button>
 
-      Account summary
-      <ul></ul>
-      Filter by account:
-      <select></select>
-      <table>
-        <tr>
-          <th>Id</th>
-          <th>Username</th>
-          <th>Transaction Type</th>
-          <th>Category</th>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>From</th>
-          <th>To</th>
-        </tr>
-      </table>
-    </main>
-    <script src="./js/helpers/Account.js"></script>
-    <script src="./js/helpers/Category.js"></script>
-    <script src="./js/helpers/Common.js"></script>
-    <script src="./js/helpers/Transaction.js"></script>
-    <script src="./js/index.js"></script>
-  </body>
+      Description
+      <input id="input-description" class="input-description" type="text" />
+
+      Amount:
+      <input id="input-amount" class="input-amount" type="number" />
+
+      <button id="btn-add-transaction" class="btn-add-transaction" type="button">Add transaction</button>
+    </form>
+
+    Account summary
+    <ul id="ul-account-sumary" class="ul-account-sumary"></ul>
+    Filter by account:
+    <select id="select-filter-by-account" class="select-filter-by-account"></select>
+    <table id="table-filter" class="table-filter">
+      <tr>
+        <th id="th-id">Id</th>
+        <th id="th-username">Username</th>
+        <th id="th-transaction-type">Transaction Type</th>
+        <th id="th-category">Category</th>
+        <th id="th-Description">Description</th>
+        <th id="th-amount">Amount</th>
+        <th id="th-from">From</th>
+        <th id="th-to">To</th>
+      </tr>
+    </table>
+    <p id="errorMessage" style="color: red;" class="errorMessage" name="errorMessage"></p>
+    <p id="succesMessage" style="color: rgb(29, 117, 29);" class="succesMessage" name="succesMessage"></p>
+
+  </main>
+  <script src="./js/helpers/Account.js"></script>
+  <script src="./js/helpers/Category.js"></script>
+  <script src="./js/helpers/Common.js"></script>
+  <script src="./js/helpers/Transaction.js"></script>
+  <script src="./js/index.js"></script>
+</body>
+
 </html>

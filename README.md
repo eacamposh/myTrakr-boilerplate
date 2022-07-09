@@ -61,7 +61,7 @@ frontend
 ## API Endpoints
 
 All the requests should have the domain of `http://localhost:3000/`.
-`http://localhost:3000/acounts`
+`http://localhost:3000/accounts`
 
 - GET `/accounts`: get all the accounts
 - POST `/accounts`: saves a new account
