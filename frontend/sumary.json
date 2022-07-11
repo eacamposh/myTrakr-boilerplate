@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "username": "Eduardo",
+        "total": "1000"
+    },
+    {
+        "id": 2,
+        "username": "Victor",
+        "total": "1200"
+    },
+    {
+        "id": 3,
+        "username": "Martina",
+        "total": "2000"
+    },
+    {
+        "id": 4,
+        "username": "Lalo",
+        "total": "4500"
+    }
+]
