@@ -150,6 +150,102 @@ $(document).ready(function () {
     }
   }
 
+  $("#btn-add-transaction").on("click", function () {
+
+    if (!$('#input-amount').val()) {
+      $("#input-amount").focus();
+      $("#errorMessage").text('ammount must to be greater than 0');
+
+    } else if ($("#select-category").val() === 'Select Category' || $("#select-category").val() === 'Add new') {
+
+      $("#select-category").focus();
+      $("#errorMessage").text('You must to select a category');
+    }
+
+    else if ($("#select-account").val() === '1') {
+      console.log('inside account if ' + $("#select-account").val());
+      $("#errorMessage").text('You must to select an Account');
+      $("#select-account").focus();
+    } else if ($('input[name="transaction-type"]:checked').length == 0) {
+
+      $("#errorMessage").text('You must to select  a type of transaction ');
+      $("#transaction-type").focus();
+
+    } else {
+
+      let id_checked = $('input[name="transaction-type"]:checked').attr('id')
+      console.log('ID CHECKED' + id_checked);
+      if (id_checked === 'input-transfer') {
+        console.log($("#select-from").val());
+        if ($("#select-from").val() === 'Select-Option' || $("#select-to").val() === 'Select-Option') {
+
+          $("#errorMessage").text('You must to select a from and To to create a Transfer ');
+          console.log('inside if ql');
+        } else if ($("#select-from").val() === $("#select-to").val()) {
+
+          $("#errorMessage").text('You must to select differents acccount to transfer ');
+
+        } else {
+          console.log(' ready to save transaction');
+          saveNewTransferTransaction();
+
+
+        }
+
+
+        //TODO check balance
+        // else if () {
+
+        //   $("#errorMessage").text(' ');
+
+        // }
+
+      }
+      //TODO check balance
+      // else if (id_checked === 'input-withdraw' ){
+
+      // }
+
+    }
+
+
+
+
+  });
+
+
+
+
+
+
+  function saveNewTransferTransaction() {
+
+
+    let account_id = '';
+    let account_id_from = $("#select-from").val();
+    let account_id_to = $("#select-to").val();
+
+    console.log('saveNewTransaction' + account_id_from.charAt(0) + ' to ' + account_id_to.charAt(0));
+    $.ajax({
+      method: 'post',
+      data: JSON.stringify({
+        newTransaction: {
+          accountId: "",
+          accountIdFrom: account_id_from.charAt(0),
+          accountIdTo: account_id_to.charAt(0)
+        },
+      }),
+      url: 'http://localhost:3000/transaction',
+      contentType: 'application/json',
+      dataType: 'json',
+    }).done((data) => {
+      console.log('Transaction Saved', data);
+    });
+
+
+  }
+
+
 
   //? Eduardo's Code
 
@@ -163,10 +259,12 @@ $(document).ready(function () {
     }
     else {
       console.log('Else:', new_account);
-      $('#select-account').append('<option>' + new_account + '</option>');
-      $('#select-from').append('<option>' + new_account + '</option>');
-      $('#select-to').append('<option>' + new_account + '</option>');
-      $('#select-filter-by-account').append('<option>' + new_account + '</option>');
+
+      // $('#select-account').append('<option>' + new_account + '</option>');
+      // $('#select-from').append('<option>' + new_account + '</option>');
+      // $('#select-to').append('<option>' + new_account + '</option>');
+      // $('#select-filter-by-account').append('<option>' + new_account + '</option>');
+
 
       $.ajax({
         method: 'post',
@@ -183,6 +281,11 @@ $(document).ready(function () {
         console.log('Account Saved', data);
       });
     }
+
+
+    getNewAccounts();
+
+
   });
 
   function getNewAccounts() {
@@ -207,10 +310,10 @@ $(document).ready(function () {
 
       $.each(data, (i, post) => {
         console.log('each: ', post.username);
-        $('#select-account').append('<option>' + post.username + '</option>');
-        $('#select-from').append('<option>' + post.username + '</option>');
-        $('#select-to').append('<option>' + post.username + '</option>');
-        $('#select-filter-by-account').append('<option>' + post.username + '</option>');
+        $('#select-account').append('<option>' + post.id + " " + post.username + '</option>');
+        $('#select-from').append('<option>' + post.id + " " + post.username + '</option>');
+        $('#select-to').append('<option>' + post.id + " " + post.username + '</option>');
+        $('#select-filter-by-account').append('<option>' + post.id + " " + post.username + '</option>');
 
       });
     });
