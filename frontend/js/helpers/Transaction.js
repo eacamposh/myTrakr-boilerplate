@@ -20,4 +20,21 @@ class Deposit extends Transaction {
   get value() {
     return this.amount;
   }
+
+}
+
+
+class Transfer extends Transaction {
+  constructor(amount, account, idFrom, idTo, description, category) {
+    super(amount, account);
+
+    this.idFrom = idFrom;
+    this.idTo = idTo;
+    this.description = description;
+    this.category = category;
+  }
+
+  get value() {
+    return this.amount;
+  }
 }
