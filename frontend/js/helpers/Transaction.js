@@ -1,8 +1,10 @@
 class Transaction {
-  constructor(amount, account) {
+  constructor(amount, account,description,category) {
     this.amount = amount;
     this.account = account;
-    
+    this.description=description;
+    this.category=category;
+
   }
   commit() {
     if (this.value < 0 && this.amount > this.account.balance) return;
@@ -12,10 +14,10 @@ class Transaction {
 }
 
 class Withdrawal extends Transaction {
-  constructor(){
-
+  constructor(amount,account,description,category){
+    super(amount, account,description,category);
     this.transactionType='withdrawal';
-    super(amount, account);
+
   }
   get value() {
 
@@ -24,10 +26,10 @@ class Withdrawal extends Transaction {
 }
 
 class Deposit extends Transaction {
-constructor(){
-
+  constructor(amount,account,description,category){
+  super(amount, account,description,category);
   this.transactionType='deposit';
-  super(amount, account);
+
 }
   get value() {
     return this.amount;
@@ -38,7 +40,7 @@ constructor(){
 
 class Transfer extends Transaction {
   constructor(amount, account, idFrom, idTo, description, category) {
-    super(amount, account);
+    super(amount, account,description, category);
     this.transactionType='transfer';
     this.idFrom = idFrom;
     this.idTo = idTo;

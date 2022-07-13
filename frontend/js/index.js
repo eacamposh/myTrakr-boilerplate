@@ -149,7 +149,7 @@ $(document).ready(function () {
 
     }
   }
-
+//btn sumbit the transaction.
   $("#btn-add-transaction").on("click", function () {
 
     if (!$('#input-amount').val()) {
@@ -188,8 +188,6 @@ $(document).ready(function () {
         } else {
           console.log(' ready to save transaction');
           saveNewTransferTransaction();
-
-
         }
 
 
@@ -200,22 +198,195 @@ $(document).ready(function () {
 
         // }
 
-      }
-      //TODO check balance
-      // else if (id_checked === 'input-withdraw' ){
+      } else if (id_checked === 'input-withdraw') {
 
-      // }
+        if ($("#select-account").val() === 'Select-Option' || $("#select-account").val() === 'Select-Option') {
+
+          $("#errorMessage").text('You must to select an Account to make  a Withdraw ');
+
+        } else {
+
+          saveNewWithdrawTransaction();
+        }
+
+
+
+
+      } else if (id_checked === 'input-deposit') {
+
+
+        if ($("#select-account").val() === 'Select-Option' || $("#select-account").val() === 'Select-Option') {
+
+          $("#errorMessage").text('You must to select an Account to make  a Deposit ');
+
+        } else {
+
+          saveNewDeposit();
+        }
+
+
+
+      }
 
     }
-
-
-
 
   });
 
 
 
+  $("#btn-clear").on("click", function () {
 
+    window.localStorage.clear();
+
+  });
+
+
+
+  function saveNewDeposit() {
+
+    let account_id = $("#select-account").val();
+
+
+    console.log('saveNewWithdraw ' + account_id.charAt(0));
+    $.ajax({
+      method: 'post',
+      data: JSON.stringify({
+        newTransaction: {
+          accountId: account_id.charAt(0),
+          accountIdFrom: null,
+          accountIdTo: null
+        },
+      }),
+      url: 'http://localhost:3000/transaction',
+      contentType: 'application/json',
+      dataType: 'json',
+    }).done((data) => {
+      console.log('Transaction Saved', data);
+    });
+
+    let amount = $("#input-amount").val();
+    let category = $("#select-category").val();
+    let description = $("#input-description").val();
+
+
+
+    let newTransaction = new Deposit(amount, account_id.charAt(0), description
+      , category);
+
+    var transactions = [];
+    console.log('beofre get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
+    transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
+    if (null != transactions) {
+      console.log('ARRAY with' + transactions);
+      transactions.push(newTransaction);
+      window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions));
+
+      $.each(transactions, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.idFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+    } else {
+      var transactions1 = [];
+      transactions1.push(newTransaction);
+      window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions1));
+
+
+      $.each(transactions1, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.itFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+
+    }
+
+  }
+
+
+  function saveNewWithdrawTransaction() {
+
+
+    let account_id = $("#select-account").val();
+
+
+    console.log('saveNewWithdraw ' + account_id.charAt(0));
+    $.ajax({
+      method: 'post',
+      data: JSON.stringify({
+        newTransaction: {
+          accountId: account_id.charAt(0),
+          accountIdFrom: null,
+          accountIdTo: null
+        },
+      }),
+      url: 'http://localhost:3000/transaction',
+      contentType: 'application/json',
+      dataType: 'json',
+    }).done((data) => {
+      console.log('Transaction Saved', data);
+    });
+
+    let amount = $("#input-amount").val();
+    let category = $("#select-category").val();
+    let description = $("#input-description").val();
+
+
+
+    let newTransaction = new Withdrawal(amount, account_id.charAt(0), description
+      , category);
+
+    var transactions = [];
+    console.log('beofre get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
+    transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
+    if (null != transactions) {
+      console.log('ARRAY with' + transactions);
+      transactions.push(newTransaction);
+      window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions));
+
+      $.each(transactions, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.idFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+    } else {
+      var transactions1 = [];
+      transactions1.push(newTransaction);
+      window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions1));
+
+
+
+      $.each(transactions1, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.idFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+    }
+
+  }
 
 
   function saveNewTransferTransaction() {
@@ -242,9 +413,55 @@ $(document).ready(function () {
       console.log('Transaction Saved', data);
     });
 
+    let amount = $("#input-amount").val();
+    let category = $("#select-category").val();
+    let description = $("#input-description").val();
+
+
+    let newTransaction = new Transfer(amount, '',
+      account_id_from.charAt(0), account_id_to.charAt(0), description, category);
+
+
+
+    var transactions = [];
+    transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
+    if (null != transactions) {
+
+      transactions.push(newTransaction);
+      window.localStorage.setItem(account_id_from.charAt(0), JSON.stringify(transactions));
+
+      $.each(transactions, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.idFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+    } else {
+      var transactions1 = [];
+      transactions1.push(newTransaction);
+      window.localStorage.setItem(account_id_from.charAt(0), JSON.stringify(transactions1));
+
+      $.each(transactions1, (i, post) => {
+        console.log('itemes Account' + post.account);
+        console.log('itemes idFrom' + post.idFrom);
+        console.log('itemes idTo' + post.idTo);
+        console.log('itemes amount' + post.amount);
+        console.log('itemes description' + post.description);
+        console.log('itemes category' + post.category);
+        console.log('itemes type' + post.transactionType);
+      });
+
+
+    }
+
+
 
   }
-
 
 
   //? Eduardo's Code
