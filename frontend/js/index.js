@@ -513,9 +513,11 @@ $(document).ready(function () {
         }
       });
     }
-
-    getNewAccounts();
-
+    console.log('Time in:');
+    window.setTimeout(function () {
+      getNewAccounts();
+    }, 500);
+    console.log('Time out:');
 
   });
 
