@@ -552,6 +552,46 @@ $(document).ready(function () {
 
   }
 
+
+
+  $('#select-filter-by-account').on('click', function () {
+    filterByAccount();
+  });
+
+
+  function filterByAccount() {
+
+    var transactions = [];
+    let account_id_from = $('#select-filter-by-account').val();
+
+    transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
+
+/*     $('#th-id').empty();
+    $('#th-username').empty();
+    $('#th-username').empty();
+    $('#th-transaction-type').empty();
+    $('#th-category').empty();
+    $('#th-Description').empty();
+    $('#th-amount').empty();
+    $('#th-from').empty();
+    $('#th-to').empty(); */
+
+    $.each(transactions, (i, post) => {
+      console.log('each....')
+      $('#th-id').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
+      $('#th-username').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
+      $('#th-username').append(`<tr><td>${post.account}</td></tr>`);
+      $('#th-transaction-type').append(`<tr><td>${post.transactionType}</td></tr>`);
+      $('#th-category').append(`<tr><td>${post.category}</td></tr>`);
+      $('#th-Description').append(`<tr><td>${post.description}</td></tr>`);
+      $('#th-amount').append(`<tr><td>${post.amount}</td></tr>`);
+      $('#th-from').append(`<tr><td>${post.idFrom}</td></tr>`);
+      $('#th-to').append(`<tr><td>${post.idTo}</td></tr>`);
+
+    });
+
+  }
+
   /*   //getJSON - file, cb(data)
     $.getJSON('data.json', (data) => {
       $.each(data, (index, user) => {
@@ -563,7 +603,7 @@ $(document).ready(function () {
         $('#th-amount').append(`<tr><td>${user.amount}</td></tr>`);
         $('#th-from').append(`<tr><td>${user.from}</td></tr>`);
         $('#th-to').append(`<tr><td>${user.to}</td></tr>`);
-  
+   
       });
     }); */
 
