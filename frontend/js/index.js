@@ -566,18 +566,9 @@ $(document).ready(function () {
 
     transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
 
-/*     $('#th-id').empty();
-    $('#th-username').empty();
-    $('#th-username').empty();
-    $('#th-transaction-type').empty();
-    $('#th-category').empty();
-    $('#th-Description').empty();
-    $('#th-amount').empty();
-    $('#th-from').empty();
-    $('#th-to').empty(); */
+    $('#table-filter tr:not(:first)').remove();
 
     $.each(transactions, (i, post) => {
-      console.log('each....')
       $('#th-id').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
       $('#th-username').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
       $('#th-username').append(`<tr><td>${post.account}</td></tr>`);
@@ -590,22 +581,8 @@ $(document).ready(function () {
 
     });
 
-  }
 
-  /*   //getJSON - file, cb(data)
-    $.getJSON('data.json', (data) => {
-      $.each(data, (index, user) => {
-        $('#th-id').append(`<tr><td>${user.id}</td></tr>`);
-        $('#th-username').append(`<tr><td>${user.username}</td></tr>`);
-        $('#th-transaction-type').append(`<tr><td>${user.transactionType}</td></tr>`);
-        $('#th-category').append(`<tr><td>${user.category}</td></tr>`);
-        $('#th-Description').append(`<tr><td>${user.description}</td></tr>`);
-        $('#th-amount').append(`<tr><td>${user.amount}</td></tr>`);
-        $('#th-from').append(`<tr><td>${user.from}</td></tr>`);
-        $('#th-to').append(`<tr><td>${user.to}</td></tr>`);
-   
-      });
-    }); */
+  }
 
 
   $('#btn-account-sumary').on('click', function (e) {
@@ -614,14 +591,51 @@ $(document).ready(function () {
 
 
   function getAcoountSumary() {
-    $.getJSON('sumary.json', (data) => {
-      console.log('data json', data);
-      $.each(data, (index, user) => {
-        $('#list').append(`<li>${user.id} ${user.username} ${user.total}</li>`);
-      });
-    });
+    let total = 1000;
+    let totalDeposit = 0;
+    let totalWithdraw = 0;
+    let totalTransferTo = 0;
+    let totalTranferFrom = 0;
+    let transactions = [];
+    let account_id_from = $('#select-filter-by-account').val();
 
+    transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
+    $('#table-account-sumary tr:not(:first)').remove();
+
+    $.each(transactions, (i, post) => {
+      if (post.transactionType === "deposit") {
+        console.log('Transaction Type (Deposit)')
+        totalDeposit = totalDeposit + parseInt(post.amount, 10);
+        console.log("Total Transaction deposit:", totalDeposit)
+      }
+      if (post.transactionType === 'withdrawal') {
+        console.log('Transaction Type (Withdraw)')
+        totalWithdraw = totalWithdraw - parseInt(post.amount, 10);
+        console.log("Total Transaction Withdraw:", totalWithdraw)
+      }
+      if (post.transactionType === 'transfer' && post.idFrom == true) {
+        console.log('Transaction Type (Transfer From)')
+        totalTranferFrom = totalTranferFrom - parseInt(post.amount, 10);
+        console.log("Total Transaction From:", totalTranferFrom)
+      }
+      if (post.transactionType === 'transfer' && post.idTo == true) {
+        console.log('Transaction Type (Transfer To)')
+        totalTransferTo = totalTransferTo + parseInt(post.amount, 10);
+        console.log("Total Transaction To:", totalTransferTo)
+      }
+
+    });
+    $('#th-id-sumary').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
+    $('#th-username-sumary').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
+    $('#th-total').append(`<tr><td>${total + totalDeposit + totalWithdraw + totalTranferFrom + totalTransferTo + ' CAD'}</td></tr>`);
   }
 
 
 });
+
+/* $.getJSON('sumary.json', (data) => {
+  console.log('data json', data);
+  $.each(data, (index, user) => {
+    $('#list').append(`<li>${user.id} ${user.username} ${user.total}</li>`);
+  });
+}); */
