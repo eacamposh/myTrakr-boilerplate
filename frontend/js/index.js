@@ -14,10 +14,10 @@ $(document).ready(function () {
   $('select#select-category').click(function () {
 
     let aux = $("#select-category").val();
-    console.log('value' + aux);
+
     if (aux === 'Add new') {
 
-      console.log('inner function papa');
+
 
       $("#input-new-category").val('');
 
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
 
     let category_input = $('#input-new-category').val();
-    console.log(category_input);
+
 
     if (category_input != '') {
 
@@ -62,9 +62,6 @@ $(document).ready(function () {
 
 
   function saveNewCategory(input) {
-
-
-    console.log('category ql ' + input);
 
     const data = { newCategory: input, };
     $.ajax({
@@ -118,13 +115,13 @@ $(document).ready(function () {
     if (this.checked) {
       if (this.id === 'input-withdraw' || this.id === 'input-deposit') {
 
-        console.log('with or deposit');
+
         $('select[name=select-from]').attr("disabled", true);
         $('select[name=select-to]').attr("disabled", true);
         $('select[name=select-account]').attr("disabled", false);
       }
       else if (this.id === 'input-transfer') {
-        console.log('ELSE:');
+
         $('select[name=select-from]').attr("disabled", false);
         $('select[name=select-to]').attr("disabled", false);
         $('select[name=select-account]').attr("disabled", true);
@@ -151,7 +148,7 @@ $(document).ready(function () {
     }
 
     else if ($("#select-account").val() === '1') {
-      console.log('inside account if ' + $("#select-account").val());
+
       $("#errorMessage").text('You must to select an Account');
       $("#select-account").focus();
     } else if ($('input[name="transaction-type"]:checked').length == 0) {
@@ -162,21 +159,21 @@ $(document).ready(function () {
     } else {
 
       let id_checked = $('input[name="transaction-type"]:checked').attr('id')
-      console.log('ID CHECKED' + id_checked);
+
       if (id_checked === 'input-transfer') {
-        console.log($("#select-from").val());
+
         if ($("#select-from").val() === 'Select-Option' || $("#select-to").val() === 'Select-Option') {
 
           $("#errorMessage").text('You must to select a from and To to create a Transfer ');
-          console.log('inside if ql');
+
         } else if ($("#select-from").val() === $("#select-to").val()) {
 
           $("#errorMessage").text('You must to select differents acccount to transfer ');
 
         } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
-          console.log(' ready to save transaction');
-          
-        
+
+
+
 
           saveNewTransferTransaction();
           $("#errorMessage").text('');
@@ -276,10 +273,9 @@ $(document).ready(function () {
       , category);
 
     var transactions = [];
-    console.log('beofre get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
     transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
     if (null != transactions) {
-      console.log('ARRAY with' + transactions);
+
       transactions.push(newTransaction);
       window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions));
 
@@ -322,7 +318,7 @@ $(document).ready(function () {
 
     let account_id = $("#select-account").val();
 
-    console.log('saveNewWithdraw ' + account_id.charAt(0));
+
     $.ajax({
       method: 'post',
       data: JSON.stringify({
@@ -349,7 +345,6 @@ $(document).ready(function () {
       , category);
 
     let transactions = [];
-    console.log('before get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
     transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
     if (null != transactions) {
       console.log('ARRAY with' + transactions);
