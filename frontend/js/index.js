@@ -135,6 +135,7 @@ $(document).ready(function () {
   $("#btn-add-transaction").on("click", function () {
     let acccount_id = $("#select-account").val();
     let input_amount = $("#input-amount").val();
+    let firstdeposit=1000;
 
 
     if (!$('#input-amount').val()) {
@@ -161,6 +162,8 @@ $(document).ready(function () {
       let id_checked = $('input[name="transaction-type"]:checked').attr('id')
 
       if (id_checked === 'input-transfer') {
+        console.log('TRANSFER'+input_amount);
+console.log('TRANSFER'+checkInconmeTrasaction(acccount_id.charAt(0)));
 
         if ($("#select-from").val() === 'Select-Option' || $("#select-to").val() === 'Select-Option') {
 
@@ -170,7 +173,7 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select differents acccount to transfer ');
 
-        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
+        } else if (input_amount  <= checkInconmeTrasaction(acccount_id.charAt(0)) + firstdeposit) {
 
 
 
@@ -197,13 +200,13 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select an Account to make  a Withdraw ');
 
-        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
+        } else if (input_amount  <= checkInconmeTrasaction(acccount_id.charAt(0)) + firstdeposit) {
 
           $("#errorMessage").text('');
           $("#succesMessage").text('Transaction created');
           saveNewWithdrawTransaction();
         } else {
-          $("#errorMessage").text('You dont have  funds in your acoount');
+          $("#errorMessage").text('You dont have funds in your acoount');
           $("#succesMessage").text('');
         }
 
