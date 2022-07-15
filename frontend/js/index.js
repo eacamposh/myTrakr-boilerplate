@@ -421,8 +421,6 @@ $(document).ready(function () {
     let newTransaction = new Transfer(amount, '',
       account_id_from.charAt(0), account_id_to.charAt(0), description, category);
 
-
-
     var transactions = [];
     transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
     if (null != transactions) {
@@ -594,7 +592,6 @@ $(document).ready(function () {
     let total = 1000;
     let totalDeposit = 0;
     let totalWithdraw = 0;
-    let totalTransferTo = 0;
     let totalTranferFrom = 0;
     let transactions = [];
     let account_id_from = $('#select-filter-by-account').val();
@@ -610,28 +607,73 @@ $(document).ready(function () {
       }
       if (post.transactionType === 'withdrawal') {
         console.log('Transaction Type (Withdraw)')
-        totalWithdraw = totalWithdraw - parseInt(post.amount, 10);
+        totalWithdraw = totalWithdraw + parseInt(post.amount, 10);
         console.log("Total Transaction Withdraw:", totalWithdraw)
       }
-      if (post.transactionType === 'transfer' && post.idFrom == true) {
+      if (post.transactionType === 'transfer') {
         console.log('Transaction Type (Transfer From)')
-        totalTranferFrom = totalTranferFrom - parseInt(post.amount, 10);
+        totalTranferFrom = totalTranferFrom + parseInt(post.amount, 10);
         console.log("Total Transaction From:", totalTranferFrom)
       }
-      if (post.transactionType === 'transfer' && post.idTo == true) {
-        console.log('Transaction Type (Transfer To)')
-        totalTransferTo = totalTransferTo + parseInt(post.amount, 10);
-        console.log("Total Transaction To:", totalTransferTo)
-      }
+
 
     });
+
+    let totalTranferIncome = checkInconmeTrasaction(account_id_from.charAt(0));
+
     $('#th-id-sumary').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
     $('#th-username-sumary').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
-    $('#th-total').append(`<tr><td>${total + totalDeposit + totalWithdraw + totalTranferFrom + totalTransferTo + ' CAD'}</td></tr>`);
+    $('#th-total').append(`<tr><td>${(total + totalDeposit + totalTranferIncome - totalWithdraw - totalTranferFrom) + ' CAD'}</td></tr>`);
+  }
+
+  function checkInconmeTrasaction(id_account) {
+
+    let getId = [];
+    let amount = 0;
+
+    $("#select-filter-by-account").find('option').each(function () {
+      let account_id = $(this).val()
+      console.log('account id :', account_id);
+      getId.push(account_id);
+    });
+
+    getId.shift();
+
+    console.log('get ID:', getId.length);
+    let aux2 = getId.length;
+    aux2 = aux2 - 1;
+    for (let i = 1; i <= getId.length; i++) {
+      let transactionToCheck = [];
+      transactionToCheck = JSON.parse(window.localStorage.getItem(i));
+      console.log('For 2 (i): ', i);
+      if (null != transactionToCheck) {
+
+        let aux = transactionToCheck.length;
+        aux = aux - 1;
+        console.log('LENGTH0' + aux)
+        for (let j = 0; j < transactionToCheck.length; j++) {
+          console.log('CHECK: ', transactionToCheck[j]);
+          console.log('CHECK: ', transactionToCheck.length);
+          if (transactionToCheck[j] !== undefined && transactionToCheck[j] !== null) {
+            if (transactionToCheck[j].idTo === id_account) {
+              amount = amount + parseInt(transactionToCheck[j].amount, 10);
+              console.log('amount trasnfercheck: ', amount);
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+    return amount;
   }
 
 
 });
+
+
 
 /* $.getJSON('sumary.json', (data) => {
   console.log('data json', data);
