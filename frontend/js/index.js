@@ -5,6 +5,8 @@ $(() => {
 $(document).ready(function () {
 
   const empty = 'select-account';
+  $("#succesMessage").text('');
+  $("#errorMessage").text('');
 
   // to populate category select when the page is loading.
   getCategories();
@@ -173,7 +175,12 @@ $(document).ready(function () {
 
         } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
           console.log(' ready to save transaction');
+          
+        
+
           saveNewTransferTransaction();
+          $("#errorMessage").text('');
+          $("#succesMessage").text('Transaction created');
         } else {
           $("#errorMessage").text('You dont have  funds in your acoount');
         }
@@ -194,6 +201,8 @@ $(document).ready(function () {
 
         } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
 
+          $("#errorMessage").text('');
+          $("#succesMessage").text('Transaction created');
           saveNewWithdrawTransaction();
         } else {
           $("#errorMessage").text('You dont have  funds in your acoount');
@@ -209,6 +218,8 @@ $(document).ready(function () {
         } else {
 
           saveNewDeposit();
+          $("#succesMessage").text('A new de[osit was created');
+          $("#errorMessage").text('');
         }
 
 
@@ -224,6 +235,8 @@ $(document).ready(function () {
   $("#btn-clear").on("click", function () {
 
     window.localStorage.clear();
+    $("#errorMessage").text('');
+    $("#succesMessage").text('');
 
   });
 
@@ -492,7 +505,8 @@ $(document).ready(function () {
           }).done((data) => {
             console.log('Account Saved', data);
           });
-
+          $("#errorMessage").text('');
+          $("#succesMessage").text('Account created');
         }
       });
     }
