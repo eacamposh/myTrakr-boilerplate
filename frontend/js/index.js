@@ -134,6 +134,9 @@ $(document).ready(function () {
   }
   //btn sumbit the transaction.
   $("#btn-add-transaction").on("click", function () {
+    let acccount_id = $("#select-account").val();
+    let input_amount = $("#input-amount").val();
+
 
     if (!$('#input-amount').val()) {
       $("#input-amount").focus();
@@ -168,9 +171,11 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select differents acccount to transfer ');
 
-        } else {
+        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
           console.log(' ready to save transaction');
           saveNewTransferTransaction();
+        } else {
+          $("#errorMessage").text('You dont have  funds in your acoount');
         }
 
 
@@ -187,13 +192,12 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select an Account to make  a Withdraw ');
 
-        } else {
+        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
 
           saveNewWithdrawTransaction();
+        } else {
+          $("#errorMessage").text('You dont have  funds in your acoount');
         }
-
-
-
 
       } else if (id_checked === 'input-deposit') {
 
@@ -448,7 +452,6 @@ $(document).ready(function () {
 
   getNewAccounts();
 
-
   $('#btn-add-new-account').on('click', function (e) {
     let new_account = $('#new-account').val();
 
@@ -493,7 +496,7 @@ $(document).ready(function () {
         }
       });
     }
-    console.log('Time in:');
+
     window.setTimeout(function () {
       getNewAccounts();
     }, 500);
@@ -607,7 +610,6 @@ $(document).ready(function () {
     });
 
     let totalTranferIncome = checkInconmeTrasaction(account_id_from.charAt(0));
-
     $('#th-id-sumary').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
     $('#th-username-sumary').append(`<tr><td>${account_id_from.slice(2)}</td></tr>`);
     $('#th-total').append(`<tr><td>${(total + totalDeposit + totalTranferIncome - totalWithdraw - totalTranferFrom) + ' CAD'}</td></tr>`);
