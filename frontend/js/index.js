@@ -182,7 +182,8 @@ $(document).ready(function () {
           $("#errorMessage").text('');
           $("#succesMessage").text('Transaction created');
         } else {
-          $("#errorMessage").text('You dont have  funds in your acoount');
+          $("#errorMessage").text('You dont have funds in your acoount');
+          $("#succesMessage").text('');
         }
 
 
@@ -206,6 +207,7 @@ $(document).ready(function () {
           saveNewWithdrawTransaction();
         } else {
           $("#errorMessage").text('You dont have  funds in your acoount');
+          $("#succesMessage").text('');
         }
 
       } else if (id_checked === 'input-deposit') {
@@ -218,7 +220,7 @@ $(document).ready(function () {
         } else {
 
           saveNewDeposit();
-          $("#succesMessage").text('A new de[osit was created');
+          $("#succesMessage").text('A new deposit was created');
           $("#errorMessage").text('');
         }
 
