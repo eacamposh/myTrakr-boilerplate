@@ -1,23 +1,6 @@
 $(() => {
 
-
-  // $('input#radio1').click(function(e){
-
-  // //alert('id ='+ e.currentTarget.id);
-  // console.log('id ='+ e.currentTarget.id);
-
-  // });
-
-
-
-
-
-
-  //Start coding here!
-  // Eduardo Campos
 });
-
-
 
 $(document).ready(function () {
 
@@ -320,7 +303,6 @@ $(document).ready(function () {
 
     let account_id = $("#select-account").val();
 
-
     console.log('saveNewWithdraw ' + account_id.charAt(0));
     $.ajax({
       method: 'post',
@@ -347,26 +329,25 @@ $(document).ready(function () {
     let newTransaction = new Withdrawal(amount, account_id.charAt(0), description
       , category);
 
-    var transactions = [];
-    console.log('beofre get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
+    let transactions = [];
+    console.log('before get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
     transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
     if (null != transactions) {
       console.log('ARRAY with' + transactions);
       transactions.push(newTransaction);
       window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions));
-
       $.each(transactions, (i, post) => {
-        console.log('itemes Account' + post.account);
-        console.log('itemes idFrom' + post.idFrom);
-        console.log('itemes idTo' + post.idTo);
-        console.log('itemes amount' + post.amount);
-        console.log('itemes description' + post.description);
-        console.log('itemes category' + post.category);
-        console.log('itemes type' + post.transactionType);
+        console.log('itemes Account: ' + post.account);
+        console.log('itemes idFrom: ' + post.idFrom);
+        console.log('itemes idTo: ' + post.idTo);
+        console.log('itemes amount: ' + post.amount);
+        console.log('itemes description: ' + post.description);
+        console.log('itemes category: ' + post.category);
+        console.log('itemes type: ' + post.transactionType);
       });
+    }
 
-
-    } else {
+    else {
       var transactions1 = [];
       transactions1.push(newTransaction);
       window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions1));
@@ -385,6 +366,7 @@ $(document).ready(function () {
 
 
     }
+
 
   }
 
@@ -568,14 +550,19 @@ $(document).ready(function () {
 
     $.each(transactions, (i, post) => {
       $('#th-id').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
-      $('#th-username').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
-      $('#th-username').append(`<tr><td>${post.account}</td></tr>`);
+      $('#th-username').append(`<tr><td>${account_id_from.slice(2)}</td></tr>`);
       $('#th-transaction-type').append(`<tr><td>${post.transactionType}</td></tr>`);
       $('#th-category').append(`<tr><td>${post.category}</td></tr>`);
       $('#th-Description').append(`<tr><td>${post.description}</td></tr>`);
       $('#th-amount').append(`<tr><td>${post.amount}</td></tr>`);
-      $('#th-from').append(`<tr><td>${post.idFrom}</td></tr>`);
-      $('#th-to').append(`<tr><td>${post.idTo}</td></tr>`);
+      if (post.transactionType === 'withdrawal' || post.transactionType == 'deposit') {
+        $('#th-from').append(`<tr><td>${'none'}</td></tr>`);
+        $('#th-to').append(`<tr><td>${'none'}</td></tr>`);
+      } else {
+        $('#th-from').append(`<tr><td>${post.idFrom}</td></tr>`);
+        $('#th-to').append(`<tr><td>${post.idTo}</td></tr>`);
+      }
+
 
     });
 
@@ -622,7 +609,7 @@ $(document).ready(function () {
     let totalTranferIncome = checkInconmeTrasaction(account_id_from.charAt(0));
 
     $('#th-id-sumary').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
-    $('#th-username-sumary').append(`<tr><td>${account_id_from.split(1)}</td></tr>`);
+    $('#th-username-sumary').append(`<tr><td>${account_id_from.slice(2)}</td></tr>`);
     $('#th-total').append(`<tr><td>${(total + totalDeposit + totalTranferIncome - totalWithdraw - totalTranferFrom) + ' CAD'}</td></tr>`);
   }
 
@@ -640,20 +627,12 @@ $(document).ready(function () {
     getId.shift();
 
     console.log('get ID:', getId.length);
-    let aux2 = getId.length;
-    aux2 = aux2 - 1;
+
     for (let i = 1; i <= getId.length; i++) {
       let transactionToCheck = [];
       transactionToCheck = JSON.parse(window.localStorage.getItem(i));
-      console.log('For 2 (i): ', i);
       if (null != transactionToCheck) {
-
-        let aux = transactionToCheck.length;
-        aux = aux - 1;
-        console.log('LENGTH0' + aux)
         for (let j = 0; j < transactionToCheck.length; j++) {
-          console.log('CHECK: ', transactionToCheck[j]);
-          console.log('CHECK: ', transactionToCheck.length);
           if (transactionToCheck[j] !== undefined && transactionToCheck[j] !== null) {
             if (transactionToCheck[j].idTo === id_account) {
               amount = amount + parseInt(transactionToCheck[j].amount, 10);
@@ -672,12 +651,3 @@ $(document).ready(function () {
 
 
 });
-
-
-
-/* $.getJSON('sumary.json', (data) => {
-  console.log('data json', data);
-  $.each(data, (index, user) => {
-    $('#list').append(`<li>${user.id} ${user.username} ${user.total}</li>`);
-  });
-}); */
