@@ -18,7 +18,6 @@
 </head>
 
 <body>
-  myTrakr
   <main>
     <form action="">
       New Account:
@@ -56,15 +55,12 @@
         transaction</button>
     </form>
 
-    Account summary
-    <button id="btn-account-sumary" type="button">Account Sumary</button>
-
     <ul id="ul-account-sumary" class="ul-account-sumary"></ul>
     Filter by account:
     <select id="select-filter-by-account" class="select-filter-by-account"></select>
     <table id="table-filter" class="table-filter">
       <tr>
-        <th id="th-id">Id</th>
+        <th id="th-id">Id Account</th>
         <th id="th-username">Username</th>
         <th id="th-transaction-type">Transaction Type</th>
         <th id="th-category">Category</th>
@@ -74,8 +70,18 @@
         <th id="th-to">To</th>
       </tr>
     </table>
+    <br><br>
+    <button id="btn-account-sumary" type="button">Account Sumary</button>
 
-    <button id="btn-clear" name="btn-clear" class="btn-clear" type="button">Clear</button>
+    <table id="table-account-sumary"">
+      <tr>
+        <th id="th-id-sumary">Id Account</th>
+      <th id="th-username-sumary">Username</th>
+      <th id="th-total">Total</th>
+      </tr>
+    </table>
+    <br><br>
+    <button id="btn-clear" name="btn-clear" class="btn-clear" type="button">Reset Transactions</button>
     <ul id="list"></ul>
     <p id="errorMessage" style="color: red;" class="errorMessage" name="errorMessage"></p>
     <p id="succesMessage" style="color: rgb(29, 117, 29);" class="succesMessage" name="succesMessage"></p>

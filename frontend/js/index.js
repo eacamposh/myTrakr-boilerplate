@@ -1,23 +1,6 @@
 $(() => {
 
-
-  // $('input#radio1').click(function(e){
-
-  // //alert('id ='+ e.currentTarget.id);
-  // console.log('id ='+ e.currentTarget.id);
-
-  // });
-
-
-
-
-
-
-  //Start coding here!
-  // Eduardo Campos
 });
-
-
 
 $(document).ready(function () {
 
@@ -149,8 +132,11 @@ $(document).ready(function () {
 
     }
   }
-//btn sumbit the transaction.
+  //btn sumbit the transaction.
   $("#btn-add-transaction").on("click", function () {
+    let acccount_id = $("#select-account").val();
+    let input_amount = $("#input-amount").val();
+
 
     if (!$('#input-amount').val()) {
       $("#input-amount").focus();
@@ -185,9 +171,11 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select differents acccount to transfer ');
 
-        } else {
+        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
           console.log(' ready to save transaction');
           saveNewTransferTransaction();
+        } else {
+          $("#errorMessage").text('You dont have  funds in your acoount');
         }
 
 
@@ -204,13 +192,12 @@ $(document).ready(function () {
 
           $("#errorMessage").text('You must to select an Account to make  a Withdraw ');
 
-        } else {
+        } else if (input_amount <= checkInconmeTrasaction(acccount_id.charAt(0))) {
 
           saveNewWithdrawTransaction();
+        } else {
+          $("#errorMessage").text('You dont have  funds in your acoount');
         }
-
-
-
 
       } else if (id_checked === 'input-deposit') {
 
@@ -320,7 +307,6 @@ $(document).ready(function () {
 
     let account_id = $("#select-account").val();
 
-
     console.log('saveNewWithdraw ' + account_id.charAt(0));
     $.ajax({
       method: 'post',
@@ -347,26 +333,25 @@ $(document).ready(function () {
     let newTransaction = new Withdrawal(amount, account_id.charAt(0), description
       , category);
 
-    var transactions = [];
-    console.log('beofre get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
+    let transactions = [];
+    console.log('before get whit ' + JSON.parse(window.localStorage.getItem(account_id.charAt(0))));
     transactions = JSON.parse(window.localStorage.getItem(account_id.charAt(0)));
     if (null != transactions) {
       console.log('ARRAY with' + transactions);
       transactions.push(newTransaction);
       window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions));
-
       $.each(transactions, (i, post) => {
-        console.log('itemes Account' + post.account);
-        console.log('itemes idFrom' + post.idFrom);
-        console.log('itemes idTo' + post.idTo);
-        console.log('itemes amount' + post.amount);
-        console.log('itemes description' + post.description);
-        console.log('itemes category' + post.category);
-        console.log('itemes type' + post.transactionType);
+        console.log('itemes Account: ' + post.account);
+        console.log('itemes idFrom: ' + post.idFrom);
+        console.log('itemes idTo: ' + post.idTo);
+        console.log('itemes amount: ' + post.amount);
+        console.log('itemes description: ' + post.description);
+        console.log('itemes category: ' + post.category);
+        console.log('itemes type: ' + post.transactionType);
       });
+    }
 
-
-    } else {
+    else {
       var transactions1 = [];
       transactions1.push(newTransaction);
       window.localStorage.setItem(account_id.charAt(0), JSON.stringify(transactions1));
@@ -385,6 +370,7 @@ $(document).ready(function () {
 
 
     }
+
 
   }
 
@@ -420,8 +406,6 @@ $(document).ready(function () {
 
     let newTransaction = new Transfer(amount, '',
       account_id_from.charAt(0), account_id_to.charAt(0), description, category);
-
-
 
     var transactions = [];
     transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
@@ -468,40 +452,55 @@ $(document).ready(function () {
 
   getNewAccounts();
 
-
   $('#btn-add-new-account').on('click', function (e) {
     let new_account = $('#new-account').val();
+
     if (new_account.length == 0) {
       alert("Empty field!");
-    }
-    else {
-      console.log('Else:', new_account);
-
-      // $('#select-account').append('<option>' + new_account + '</option>');
-      // $('#select-from').append('<option>' + new_account + '</option>');
-      // $('#select-to').append('<option>' + new_account + '</option>');
-      // $('#select-filter-by-account').append('<option>' + new_account + '</option>');
-
+    } else {
 
       $.ajax({
-        method: 'post',
-        data: JSON.stringify({
-          newAccount: {
-            username: `${new_account}`,
-            transactions: [],
-          },
-        }),
+        method: 'get',
         url: 'http://localhost:3000/accounts',
-        contentType: 'application/json',
         dataType: 'json',
       }).done((data) => {
-        console.log('Account Saved', data);
+        console.log('data get ajax', data);
+        let aux = 0;
+
+        $.each(data, (i, post) => {
+          console.log('New Account: ', post.username);
+          if (post.username === new_account) {
+            aux = aux + 1;
+
+          }
+        });
+        if (aux > 0) {
+          $("#errorMessage").text('Account already exist!');
+        } else {
+          console.log('Send post:', new_account);
+          $.ajax({
+            method: 'post',
+            data: JSON.stringify({
+              newAccount: {
+                username: `${new_account}`,
+                transactions: [],
+              },
+            }),
+            url: 'http://localhost:3000/accounts',
+            contentType: 'application/json',
+            dataType: 'json',
+          }).done((data) => {
+            console.log('Account Saved', data);
+          });
+
+        }
       });
     }
 
-
-    getNewAccounts();
-
+    window.setTimeout(function () {
+      getNewAccounts();
+    }, 500);
+    console.log('Time out:');
 
   });
 
@@ -517,7 +516,6 @@ $(document).ready(function () {
       $('#select-from').empty();
       $('#select-to').empty();
       $('#select-filter-by-account').empty();
-      console.log('Select-account', new_account);
 
       $('#select-account').append('<option>' + new_account + '</option>');
       $('#select-from').append('<option>' + new_account + '</option>');
@@ -526,7 +524,7 @@ $(document).ready(function () {
 
 
       $.each(data, (i, post) => {
-        console.log('each: ', post.username);
+        console.log('New Account: ', post.username);
         $('#select-account').append('<option>' + post.id + " " + post.username + '</option>');
         $('#select-from').append('<option>' + post.id + " " + post.username + '</option>');
         $('#select-to').append('<option>' + post.id + " " + post.username + '</option>');
@@ -537,21 +535,42 @@ $(document).ready(function () {
 
   }
 
-  //getJSON - file, cb(data)
-  $.getJSON('data.json', (data) => {
-    console.log('data json', data);
-    $.each(data, (index, user) => {
-      $('#th-id').append(`<tr><td>${user.id}</td></tr>`);
-      $('#th-username').append(`<tr><td>${user.username}</td></tr>`);
-      $('#th-transaction-type').append(`<tr><td>${user.transactionType}</td></tr>`);
-      $('#th-category').append(`<tr><td>${user.category}</td></tr>`);
-      $('#th-Description').append(`<tr><td>${user.description}</td></tr>`);
-      $('#th-amount').append(`<tr><td>${user.amount}</td></tr>`);
-      $('#th-from').append(`<tr><td>${user.from}</td></tr>`);
-      $('#th-to').append(`<tr><td>${user.to}</td></tr>`);
+
+
+  $('#select-filter-by-account').on('click', function () {
+    filterByAccount();
+  });
+
+
+  function filterByAccount() {
+
+    var transactions = [];
+    let account_id_from = $('#select-filter-by-account').val();
+
+    transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
+
+    $('#table-filter tr:not(:first)').remove();
+
+    $.each(transactions, (i, post) => {
+      $('#th-id').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
+      $('#th-username').append(`<tr><td>${account_id_from.slice(2)}</td></tr>`);
+      $('#th-transaction-type').append(`<tr><td>${post.transactionType}</td></tr>`);
+      $('#th-category').append(`<tr><td>${post.category}</td></tr>`);
+      $('#th-Description').append(`<tr><td>${post.description}</td></tr>`);
+      $('#th-amount').append(`<tr><td>${post.amount}</td></tr>`);
+      if (post.transactionType === 'withdrawal' || post.transactionType == 'deposit') {
+        $('#th-from').append(`<tr><td>${'none'}</td></tr>`);
+        $('#th-to').append(`<tr><td>${'none'}</td></tr>`);
+      } else {
+        $('#th-from').append(`<tr><td>${post.idFrom}</td></tr>`);
+        $('#th-to').append(`<tr><td>${post.idTo}</td></tr>`);
+      }
+
 
     });
-  });
+
+
+  }
 
 
   $('#btn-account-sumary').on('click', function (e) {
@@ -560,15 +579,76 @@ $(document).ready(function () {
 
 
   function getAcoountSumary() {
-    $.getJSON('sumary.json', (data) => {
-      console.log('data json', data);
-      $.each(data, (index, user) => {
-        $('#list').append(`
-        <li>${user.id} ${user.username} ${user.total}</li>
-        `);
-      });
+    let total = 1000;
+    let totalDeposit = 0;
+    let totalWithdraw = 0;
+    let totalTranferFrom = 0;
+    let transactions = [];
+    let account_id_from = $('#select-filter-by-account').val();
+
+    transactions = JSON.parse(window.localStorage.getItem(account_id_from.charAt(0)));
+    $('#table-account-sumary tr:not(:first)').remove();
+
+    $.each(transactions, (i, post) => {
+      if (post.transactionType === "deposit") {
+        console.log('Transaction Type (Deposit)')
+        totalDeposit = totalDeposit + parseInt(post.amount, 10);
+        console.log("Total Transaction deposit:", totalDeposit)
+      }
+      if (post.transactionType === 'withdrawal') {
+        console.log('Transaction Type (Withdraw)')
+        totalWithdraw = totalWithdraw + parseInt(post.amount, 10);
+        console.log("Total Transaction Withdraw:", totalWithdraw)
+      }
+      if (post.transactionType === 'transfer') {
+        console.log('Transaction Type (Transfer From)')
+        totalTranferFrom = totalTranferFrom + parseInt(post.amount, 10);
+        console.log("Total Transaction From:", totalTranferFrom)
+      }
+
+
     });
 
+    let totalTranferIncome = checkInconmeTrasaction(account_id_from.charAt(0));
+    $('#th-id-sumary').append(`<tr><td>${account_id_from.charAt(0)}</td></tr>`);
+    $('#th-username-sumary').append(`<tr><td>${account_id_from.slice(2)}</td></tr>`);
+    $('#th-total').append(`<tr><td>${(total + totalDeposit + totalTranferIncome - totalWithdraw - totalTranferFrom) + ' CAD'}</td></tr>`);
+  }
+
+  function checkInconmeTrasaction(id_account) {
+
+    let getId = [];
+    let amount = 0;
+
+    $("#select-filter-by-account").find('option').each(function () {
+      let account_id = $(this).val()
+      console.log('account id :', account_id);
+      getId.push(account_id);
+    });
+
+    getId.shift();
+
+    console.log('get ID:', getId.length);
+
+    for (let i = 1; i <= getId.length; i++) {
+      let transactionToCheck = [];
+      transactionToCheck = JSON.parse(window.localStorage.getItem(i));
+      if (null != transactionToCheck) {
+        for (let j = 0; j < transactionToCheck.length; j++) {
+          if (transactionToCheck[j] !== undefined && transactionToCheck[j] !== null) {
+            if (transactionToCheck[j].idTo === id_account) {
+              amount = amount + parseInt(transactionToCheck[j].amount, 10);
+              console.log('amount trasnfercheck: ', amount);
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+    return amount;
   }
 
 
